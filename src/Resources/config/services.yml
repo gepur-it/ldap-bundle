@@ -1,0 +1,79 @@
+services:
+    GepurIt\LdapBundle\Command\:
+        autowire: true
+        resource: '../../Command/*'
+        tags: ['console.command']
+
+    GepurIt\LdapBundle\Security\AccessProvider:
+        autowire: true
+
+    GepurIt\LdapBundle\Security\LdapVoter:
+        autowire: true
+        tags:
+            - { name: 'security.voter' }
+
+    GepurIt\LdapBundle\Ldap\LdapConnection:
+        class: GepurIt\LdapBundle\Ldap\LdapConnection
+        autowire: true
+        arguments:
+            $baseDn: '%ldap_dn%'
+            $searchQuery: '%ldap_groups_search_query%'
+            $searchUser: '%ldap_search_dn%'
+            $password: '%ldap_search_password%'
+
+    GepurIt\LdapBundle\Security\LdapGroupsProvider:
+        autowire: true
+
+    GepurIt\LdapBundle\Security\LdapResourcesProvider:
+        autowire: true
+
+    GepurIt\LdapBundle\Security\PermissionProvider:
+        autowire: true
+
+    GepurIt\LdapBundle\Entry\EntryHelper:
+        autowire: true
+
+    GepurIt\LdapBundle\Security\LdapUserProvider:
+        autowire: true
+        arguments:
+          $groupName: '%ldap_base_group_name%'
+
+    ldap.user_provider: GepurIt\LdapBundle\Security\LdapUserProvider
+
+    GepurIt\LdapBundle\Security\UserProfileProvider:
+        autowire: true
+
+    LdapBundle\Security\FailureHandler:
+        autowire: true
+
+    ldap.login.failure_handler: LdapBundle\Security\FailureHandler
+
+    GepurIt\LdapBundle\Security\LoginSuccessHandler:
+        autowire: true
+
+    ldap.login.success_handler: GepurIt\LdapBundle\Security\LoginSuccessHandler
+
+    GepurIt\LdapBundle\Security\LogoutLogHandler:
+        autowire: true
+
+    ldap.logout.log_handler: GepurIt\LdapBundle\Security\LogoutLogHandler
+
+    GepurIt\LdapBundle\Security\LogoutCleanApiKeyHandler:
+        autowire: true
+
+    ldap.logout.api_key_handler: GepurIt\LdapBundle\Security\LogoutCleanApiKeyHandler
+
+    GepurIt\LdapBundle\Security\LogoutSuccessHandler:
+        autowire: true
+
+    ldap.logout.success_handler: GepurIt\LdapBundle\Security\LogoutSuccessHandler
+
+    GepurIt\LdapBundle\Security\ApiKeyAuthenticator:
+        autowire: true
+
+    ldap.api_key.authenicator: GepurIt\LdapBundle\Security\ApiKeyAuthenticator
+
+    GepurIt\LdapBundle\Security\ApiKeyUserProvider:
+        autowire: true
+
+    ldap.api_key.user_provider: GepurIt\LdapBundle\Security\ApiKeyUserProvider
