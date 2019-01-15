@@ -3,7 +3,6 @@
   "description": "Authorisation bundle fot gepur apps",
   "type": "symfony-bundle",
   "license": "MIT",
-  "version": "1.0.0",
   "authors": [
     {
       "name": "Andrii Yakovlev",
