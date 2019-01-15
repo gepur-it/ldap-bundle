@@ -26,22 +26,22 @@ class LdapRemoveResourceCommand extends Command
     public function __construct(LdapResourcesProvider $resourceProvider, EntityManagerInterface $entityManager)
     {
         $this->resourceProvider = $resourceProvider;
-        $this->entityManager = $entityManager;
+        $this->entityManager    = $entityManager;
         parent::__construct();
     }
 
     protected function configure()
     {
         $this
-            ->setName('ldap:remove-resource')
+            ->setName('ldap:resource:remove')
             ->setDescription('Remove existing resource from the ldap_resource table.')
-            ->addArgument('resource_name', InputArgument::REQUIRED, 'Existing resource name.')
-        ;
+            ->addArgument('resource_name', InputArgument::REQUIRED, 'Existing resource name.');
     }
 
     /**
-     * @param InputInterface $input
+     * @param InputInterface  $input
      * @param OutputInterface $output
+     *
      * @return int|null|void
      */
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -55,11 +55,10 @@ class LdapRemoveResourceCommand extends Command
             return;
         }
 
-        $helper = $this->getHelper('question');
+        $helper   = $this->getHelper('question');
         $question = new ConfirmationQuestion('<question>Are you sure? [y|n]:</question>', false);
 
         if (!$helper->ask($input, $output, $question)) {
-
             return;
         }
 

@@ -22,28 +22,29 @@ class LdapRemoveRoleCommand extends Command
 
     /**
      * LdapRemoveRoleCommand constructor.
-     * @param LdapGroupsProvider $resourceProvider
+     *
+     * @param LdapGroupsProvider     $resourceProvider
      * @param EntityManagerInterface $entityManager
      */
     public function __construct(LdapGroupsProvider $resourceProvider, EntityManagerInterface $entityManager)
     {
         $this->ldapGroupsProvider = $resourceProvider;
-        $this->entityManager = $entityManager;
+        $this->entityManager      = $entityManager;
         parent::__construct();
     }
 
     protected function configure()
     {
         $this
-            ->setName('ldap:remove-role')
+            ->setName('ldap:role:remove')
             ->setDescription('Remove existing role from the ldap_role table.')
-            ->addArgument('role_name', InputArgument::REQUIRED, 'Existing role name.')
-        ;
+            ->addArgument('role_name', InputArgument::REQUIRED, 'Existing role name.');
     }
 
     /**
-     * @param InputInterface $input
+     * @param InputInterface  $input
      * @param OutputInterface $output
+     *
      * @return int|null|void
      */
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -57,7 +58,7 @@ class LdapRemoveRoleCommand extends Command
             return;
         }
 
-        $helper = $this->getHelper('question');
+        $helper   = $this->getHelper('question');
         $question = new ConfirmationQuestion('<question>Are you sure? [y|n]:</question>', false);
 
         if (!$helper->ask($input, $output, $question)) {

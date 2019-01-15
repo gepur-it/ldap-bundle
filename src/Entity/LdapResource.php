@@ -56,6 +56,16 @@ class LdapResource
     }
 
     /**
+     * Get resource
+     *
+     * @return string
+     */
+    public function getResource()
+    {
+        return $this->resource;
+    }
+
+    /**
      * Set resource
      *
      * @param string $resource
@@ -67,16 +77,6 @@ class LdapResource
         $this->resource = $resource;
 
         return $this;
-    }
-
-    /**
-     * Get resource
-     *
-     * @return string
-     */
-    public function getResource()
-    {
-        return $this->resource;
     }
 
     /**

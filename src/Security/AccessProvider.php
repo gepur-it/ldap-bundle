@@ -2,7 +2,7 @@
 
 namespace GepurIt\LdapBundle\Security;
 
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use GepurIt\LdapBundle\Entity\LdapRoleAccess;
 use GepurIt\LdapBundle\Repository\LdapRoleAccessRepository;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -19,11 +19,11 @@ class AccessProvider
     private $accessorsMap = [];
 
     /**
-     * @var EntityManager
+     * @var EntityManagerInterface
      */
     private $entityManager;
 
-    public function __construct(EntityManager $entityManager)
+    public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
     }
@@ -40,14 +40,15 @@ class AccessProvider
 
     /**
      * @param TokenInterface $token
+     *
      * @return array
      */
     protected function loadAccessorMap(TokenInterface $token)
     {
         /** @var LdapRoleAccessRepository $repository */
-        $repository = $this->entityManager->getRepository(LdapRoleAccess::class);
+        $repository   = $this->entityManager->getRepository(LdapRoleAccess::class);
         $roleAccesses = $repository->findByToken($token);
-        $result = [];
+        $result       = [];
         foreach ($roleAccesses as $roleAccess) {
             $resource = $roleAccess->getResource()->getResource();
             if (!isset($result[$resource])) {
@@ -58,6 +59,4 @@ class AccessProvider
 
         return $result;
     }
-
-
 }

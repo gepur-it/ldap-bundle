@@ -8,7 +8,6 @@
 
 namespace GepurIt\LdapBundle\Security;
 
-
 use Doctrine\ODM\MongoDB\DocumentManager;
 use GepurIt\LdapBundle\Document\UserApiKey;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,14 +15,16 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Http\Logout\LogoutHandlerInterface;
 
-class LogoutCleanApiKeyHandler  implements LogoutHandlerInterface
+class LogoutCleanApiKeyHandler implements LogoutHandlerInterface
 {
     /**
      * @var DocumentManager
      */
     private $documentManager;
+
     /**
      * LogoutCleanApiKeyHandler constructor.
+     *
      * @param DocumentManager $documentManager
      */
     public function __construct(DocumentManager $documentManager)
@@ -35,6 +36,11 @@ class LogoutCleanApiKeyHandler  implements LogoutHandlerInterface
      * This method is called by the LogoutListener when a user has requested
      * to be logged out. Usually, you would unset session variables, or remove
      * cookies, etc.
+     *
+     * @param Request        $request
+     * @param Response       $response
+     * @param TokenInterface $token
+     *
      * @throws \Doctrine\ODM\MongoDB\MongoDBException
      */
     public function logout(Request $request, Response $response, TokenInterface $token)

@@ -9,12 +9,10 @@
 namespace GepurIt\LdapBundle\Command;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\OptimisticLockException;
-use Doctrine\ORM\ORMException;
+use GepurIt\LdapBundle\Security\LdapUserProvider;
 use GepurIt\User\Entity\UserProfile;
 use GepurIt\User\Repository\UserProfileRepository;
 use GepurIt\User\Security\User;
-use GepurIt\LdapBundle\Security\LdapUserProvider;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -29,6 +27,7 @@ class FillNameInUserProfileCommand extends Command
      * @var LdapUserProvider
      */
     private $ldapUserProvider;
+
     /**
      * @var EntityManagerInterface
      */
@@ -37,23 +36,22 @@ class FillNameInUserProfileCommand extends Command
     public function __construct(LdapUserProvider $ldapUserProvider, EntityManagerInterface $entityManager)
     {
         $this->ldapUserProvider = $ldapUserProvider;
-        $this->entityManager = $entityManager;
+        $this->entityManager    = $entityManager;
         parent::__construct();
     }
 
     protected function configure()
     {
         $this
-            ->setName('ldap:fill-manager-name')
+            ->setName('ldap:manager-name:fill')
             ->setDescription('Fill manager_name in table user_profile if this field is empty.');
     }
 
     /**
-     * @param InputInterface $input
+     * @param InputInterface  $input
      * @param OutputInterface $output
+     *
      * @return int|null|void
-     * @throws OptimisticLockException
-     * @throws ORMException
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -63,6 +61,7 @@ class FillNameInUserProfileCommand extends Command
         $userProfiles = $profileRepository->findBy(['managerName' => '']);
         if (empty($userProfiles)) {
             $output->writeln(sprintf('<info>No profiles with empty names.</info>'));
+
             return;
         }
 

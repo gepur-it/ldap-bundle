@@ -38,11 +38,12 @@ class LdapRole
 
     /**
      * LdapRole constructor.
+     *
      * @param string $role
      */
     public function __construct(string $role)
     {
-        $this->role = $role;
+        $this->role         = $role;
         $this->roleAccesses = new ArrayCollection();
     }
 

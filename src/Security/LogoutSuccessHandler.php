@@ -1,7 +1,7 @@
 <?php
 /**
  * @author: Andrii yakovlev <yawa20@gmail.com>
- * @since: 28.11.17
+ * @since : 28.11.17
  */
 
 namespace GepurIt\LdapBundle\Security;
@@ -20,7 +20,7 @@ class LogoutSuccessHandler extends DefaultLogoutSuccessHandler
 {
     /**
      * @param HttpUtils $httpUtils
-     * @param string $targetUrl
+     * @param string    $targetUrl
      */
     public function __construct(HttpUtils $httpUtils, $targetUrl = '/')
     {

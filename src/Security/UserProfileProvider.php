@@ -8,7 +8,6 @@
 
 namespace GepurIt\LdapBundle\Security;
 
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use GepurIt\User\Entity\UserProfile;
 use GepurIt\User\Security\User;
@@ -19,11 +18,12 @@ use GepurIt\User\Security\User;
  */
 class UserProfileProvider
 {
-    /** @var EntityManager $entityManager */
+    /** @var EntityManagerInterface $entityManager */
     private $entityManager;
 
     /**
      * UserProfileProvider constructor.
+     *
      * @param EntityManagerInterface $entityManager
      */
     public function __construct(EntityManagerInterface $entityManager)
@@ -33,6 +33,7 @@ class UserProfileProvider
 
     /**
      * @param User $user
+     *
      * @return UserProfile
      */
     public function getProfile(User $user): UserProfile
@@ -60,6 +61,7 @@ class UserProfileProvider
 
     /**
      * @param string $userId
+     *
      * @return \GepurIt\User\Entity\UserProfile|null
      */
     public function loadProfileById(string $userId): ?UserProfile

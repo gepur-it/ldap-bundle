@@ -21,10 +21,10 @@ class BotUser extends User
      */
     public function __construct()
     {
-        $login = 'gepur';
+        $login   = 'gepur';
         $ldapSid = 'S-1-5-21-821191414-507608688-2850428263-1326';
-        $name = 'Gepur помошник';
-        $roles = [];
+        $name    = 'Gepur помошник';
+        $roles   = [];
         parent::__construct($login, $ldapSid, $name, $roles);
     }
 }

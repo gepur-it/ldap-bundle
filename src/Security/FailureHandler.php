@@ -1,7 +1,7 @@
 <?php
 /**
  * @author: Andrii yakovlev <yawa20@gmail.com>
- * @since: 27.11.17
+ * @since : 27.11.17
  */
 
 namespace GepurIt\LdapBundle\Security;
@@ -16,7 +16,6 @@ use Symfony\Component\Security\Http\Authentication\DefaultAuthenticationFailureH
  * Class FailureHandler
  * @package LdapBundle\Security
  */
-//class FailureHandler exte  implements AuthenticationFailureHandlerInterface
 class FailureHandler extends DefaultAuthenticationFailureHandler
 {
     /**

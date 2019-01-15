@@ -1,7 +1,7 @@
 <?php
 /**
  * @author: Andrii yakovlev <yawa20@gmail.com>
- * @since: 27.11.17
+ * @since : 27.11.17
  */
 
 namespace GepurIt\LdapBundle\DependencyInjection\Compiler;

@@ -6,8 +6,8 @@
 
 namespace GepurIt\LdapBundle\Entry;
 
-use GepurIt\User\Security\User;
 use GepurIt\LdapBundle\Security\LdapUserProvider;
+use GepurIt\User\Security\User;
 use Symfony\Component\Ldap\Entry;
 use Symfony\Component\Security\Core\Exception\InvalidArgumentException;
 

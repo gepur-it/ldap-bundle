@@ -1,14 +1,14 @@
 <?php
 /**
  * @author: Andrii yakovlev <yawa20@gmail.com>
- * @since: 29.11.17
+ * @since : 29.11.17
  */
 
 namespace GepurIt\LdapBundle\Security;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
-use GepurIt\User\Security\User;
 use GepurIt\LdapBundle\Document\UserApiKey;
+use GepurIt\User\Security\User;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
@@ -21,21 +21,25 @@ class ApiKeyUserProvider implements UserProviderInterface
 {
     /** @var LdapUserProvider */
     private $userProvider;
-    /** @var DocumentManager  */
+
+    /** @var DocumentManager */
     private $documentManager;
 
     /**
      * ApiKeyUserProvider constructor.
+     *
      * @param LdapUserProvider $userProvider
+     * @param DocumentManager  $documentManager
      */
     public function __construct(LdapUserProvider $userProvider, DocumentManager $documentManager)
     {
-        $this->userProvider = $userProvider;
+        $this->userProvider    = $userProvider;
         $this->documentManager = $documentManager;
     }
 
     /**
      * @param $apiKey
+     *
      * @return null|string
      */
     public function getUsernameForApiKey($apiKey)
@@ -57,6 +61,7 @@ class ApiKeyUserProvider implements UserProviderInterface
 
     /**
      * @param string $username
+     *
      * @return User|UserInterface
      */
     public function loadUserByUsername($username)
@@ -66,6 +71,7 @@ class ApiKeyUserProvider implements UserProviderInterface
 
     /**
      * @param UserInterface $user
+     *
      * @return void
      */
     public function refreshUser(UserInterface $user)
@@ -75,6 +81,7 @@ class ApiKeyUserProvider implements UserProviderInterface
 
     /**
      * @param string $class
+     *
      * @return bool
      */
     public function supportsClass($class)

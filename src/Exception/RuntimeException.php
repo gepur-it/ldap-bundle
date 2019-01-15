@@ -8,5 +8,4 @@ namespace GepurIt\LdapBundle\Exception;
  */
 class RuntimeException extends \RuntimeException
 {
-
 }

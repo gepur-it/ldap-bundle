@@ -38,12 +38,13 @@ class LdapRoleAccess
 
     /**
      * LdapRoleAccess constructor.
-     * @param LdapRole $role
+     *
+     * @param LdapRole     $role
      * @param LdapResource $resource
      */
     public function __construct(LdapRole $role, LdapResource $resource)
     {
-        $this->role = $role;
+        $this->role     = $role;
         $this->resource = $resource;
     }
 

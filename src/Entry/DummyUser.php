@@ -17,15 +17,16 @@ use GepurIt\User\Security\User;
 class DummyUser extends User
 {
     const DEFAULT_ID = 'dummy';
+
     /**
      * DummyUser constructor.
      */
     public function __construct()
     {
-        $login = self::DEFAULT_ID;
+        $login   = self::DEFAULT_ID;
         $ldapSid = self::DEFAULT_ID;
-        $name = self::DEFAULT_ID;
-        $roles = [];
+        $name    = self::DEFAULT_ID;
+        $roles   = [];
         parent::__construct($login, $ldapSid, $name, $roles);
     }
 }

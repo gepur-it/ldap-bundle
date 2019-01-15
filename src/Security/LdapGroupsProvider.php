@@ -2,7 +2,7 @@
 
 namespace GepurIt\LdapBundle\Security;
 
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use GepurIt\LdapBundle\Entity\LdapRole;
 use GepurIt\LdapBundle\Ldap\LdapConnection;
 
@@ -14,20 +14,22 @@ class LdapGroupsProvider
 {
     /** @var LdapConnection */
     private $ldapConnection;
-    /** @var EntityManager $entityManager */
+
+    /** @var EntityManagerInterface $entityManager */
     private $entityManager;
 
     /**
      * LdapGroupsProvider constructor.
-     * @param LdapConnection $ldapConnection
-     * @param EntityManager $entityManager
+     *
+     * @param LdapConnection         $ldapConnection
+     * @param EntityManagerInterface $entityManager
      */
     public function __construct(
         LdapConnection $ldapConnection,
-        EntityManager $entityManager
+        EntityManagerInterface $entityManager
     ) {
         $this->ldapConnection = $ldapConnection;
-        $this->entityManager = $entityManager;
+        $this->entityManager  = $entityManager;
     }
 
     /**
@@ -35,15 +37,15 @@ class LdapGroupsProvider
      */
     public function loadRemoteGroups(): array
     {
-        $query = '(objectCategory=group)';
-        $search = $this->ldapConnection->search($query);
+        $query   = '(objectCategory=group)';
+        $search  = $this->ldapConnection->search($query);
         $entries = $search->execute();
-        $groups = [];
+        $groups  = [];
         foreach ($entries as $entry) {
             if (!$entry->hasAttribute('cn')) {
                 continue;
             }
-            $name = $entry->getAttribute('cn')[0];
+            $name     = $entry->getAttribute('cn')[0];
             $groups[] = $name;
         }
 
@@ -65,7 +67,7 @@ class LdapGroupsProvider
     public function forgetGroup(string $group)
     {
         $groupRepository = $this->entityManager->getRepository(LdapRole::class);
-        $group = $groupRepository->findOneByRole($group);
+        $group           = $groupRepository->findOneByRole($group);
         if (null === $group) {
             return;
         }

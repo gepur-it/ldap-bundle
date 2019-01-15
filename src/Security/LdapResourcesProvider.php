@@ -2,7 +2,7 @@
 
 namespace GepurIt\LdapBundle\Security;
 
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use GepurIt\LdapBundle\Entity\LdapResource;
 use GepurIt\LdapBundle\Repository\LdapResourceRepository;
 
@@ -12,14 +12,15 @@ use GepurIt\LdapBundle\Repository\LdapResourceRepository;
  */
 class LdapResourcesProvider
 {
-    /** @var EntityManager $entityManager */
+    /** @var EntityManagerInterface $entityManager */
     private $entityManager;
 
     /**
      * LdapGroupsProvider constructor.
-     * @param EntityManager $entityManager
+     *
+     * @param EntityManagerInterface $entityManager
      */
-    public function __construct(EntityManager $entityManager)
+    public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
     }
@@ -41,7 +42,7 @@ class LdapResourcesProvider
     public function removeResource(string $resourceName)
     {
         $groupRepository = $this->entityManager->getRepository(LdapResource::class);
-        $entity = $groupRepository->findOneByResource($resourceName);
+        $entity          = $groupRepository->findOneByResource($resourceName);
         if (null === $entity) {
             return;
         }
@@ -51,6 +52,7 @@ class LdapResourcesProvider
 
     /**
      * @param string $resourceName
+     *
      * @return bool
      */
     public function hasResource(string $resourceName)

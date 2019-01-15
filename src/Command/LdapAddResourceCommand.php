@@ -25,27 +25,29 @@ class LdapAddResourceCommand extends Command
 
     /**
      * LdapAddResourceCommand constructor.
-     * @param LdapResourcesProvider $resourceProvider
+     *
+     * @param LdapResourcesProvider  $resourceProvider
      * @param EntityManagerInterface $entityManager
      */
     public function __construct(LdapResourcesProvider $resourceProvider, EntityManagerInterface $entityManager)
     {
         $this->resourceProvider = $resourceProvider;
-        $this->entityManager = $entityManager;
+        $this->entityManager    = $entityManager;
         parent::__construct();
     }
 
     protected function configure()
     {
         $this
-            ->setName('ldap:add-resource')
+            ->setName('ldap:resource:add')
             ->setDescription('Add new resource to the ldap_resource table if not exists.')
             ->addArgument('resource_name', InputArgument::REQUIRED, 'New resource name.');
     }
 
     /**
-     * @param InputInterface $input
+     * @param InputInterface  $input
      * @param OutputInterface $output
+     *
      * @return int|null|void
      */
     protected function execute(InputInterface $input, OutputInterface $output)

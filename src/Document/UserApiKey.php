@@ -1,7 +1,7 @@
 <?php
 /**
  * @author: Andrii yakovlev <yawa20@gmail.com>
- * @since: 29.11.17
+ * @since : 29.11.17
  */
 
 namespace GepurIt\LdapBundle\Document;
@@ -22,11 +22,13 @@ class UserApiKey implements \JsonSerializable
      * @MongoDB\Id(strategy="NONE")
      */
     private $apiKey = '';
+
     /**
      * @var string
      * @MongoDB\Field(type="string")
      */
     private $username = '';
+
     /**
      * @var string
      * @MongoDB\Field(type="string")
@@ -145,9 +147,9 @@ class UserApiKey implements \JsonSerializable
     public function jsonSerialize()
     {
         return [
-            "apiKey" => $this->getApiKey(),
+            "apiKey"   => $this->getApiKey(),
             "username" => $this->getUsername(),
-            "userId" => $this->getUserId()
+            "userId"   => $this->getUserId(),
         ];
     }
 }

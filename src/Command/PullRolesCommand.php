@@ -33,7 +33,7 @@ class PullRolesCommand extends Command
     public function __construct(LdapGroupsProvider $ldapGroupsProvider, EntityManagerInterface $entityManager)
     {
         $this->ldapGroupsProvider = $ldapGroupsProvider;
-        $this->entityManager = $entityManager;
+        $this->entityManager      = $entityManager;
         parent::__construct();
     }
 
@@ -43,14 +43,15 @@ class PullRolesCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('ldap:pull-roles')
+            ->setName('ldap:roles:pull')
             ->setDescription('Pulls roles from ldap server')
             ->setHelp('Sync roles from ldap server and create default access rules');
     }
 
     /**
-     * @param InputInterface $input
+     * @param InputInterface  $input
      * @param OutputInterface $output
+     *
      * @return int|null|void
      */
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -65,7 +66,7 @@ class PullRolesCommand extends Command
             }
             $ldapRole = new LdapRole($groupName);
             $this->entityManager->persist($ldapRole);
-            $this->entityManager->flush($ldapRole);
+            $this->entityManager->flush();
         }
     }
 }

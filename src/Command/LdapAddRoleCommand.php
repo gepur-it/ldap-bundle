@@ -15,27 +15,29 @@ class LdapAddRoleCommand extends Command
 {
     /** @var LdapGroupsProvider */
     private $ldapGroupsProvider;
+
     /** @var EntityManagerInterface $entityManager */
     private $entityManager;
 
     public function __construct(LdapGroupsProvider $resourceProvider, EntityManagerInterface $entityManager)
     {
         $this->ldapGroupsProvider = $resourceProvider;
-        $this->entityManager = $entityManager;
+        $this->entityManager      = $entityManager;
         parent::__construct();
     }
 
     protected function configure()
     {
         $this
-            ->setName('ldap:add-role')
+            ->setName('ldap:role:add')
             ->setDescription('Add new role to the ldap_role table if not exists.')
             ->addArgument('role_name', InputArgument::REQUIRED, 'New role name.');
     }
 
     /**
-     * @param InputInterface $input
+     * @param InputInterface  $input
      * @param OutputInterface $output
+     *
      * @return int|null|void
      */
     protected function execute(InputInterface $input, OutputInterface $output)
