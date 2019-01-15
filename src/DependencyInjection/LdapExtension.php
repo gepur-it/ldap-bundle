@@ -60,6 +60,7 @@ class LdapExtension extends Extension
 
         $ldapDefinition = new Definition();
         $ldapDefinition->setClass(Ldap::class);
+        $ldapDefinition->setArgument('$adapter', $adapter);
         $container->setDefinition(Ldap::class, $ldapDefinition);
         $container->setAlias(LdapInterface::class, Ldap::class);
     }
