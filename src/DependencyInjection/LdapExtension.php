@@ -8,6 +8,7 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
+use Symfony\Component\Ldap\Ldap;
 
 /**
  * Class LdapExtension
@@ -39,6 +40,8 @@ class LdapExtension extends Extension
     private function initLdapConnection(ContainerBuilder $container, array $config)
     {
         $definition = $container->getDefinition(LdapConnection::class);
+        $ldapDefinition = $container->getDefinition(Ldap::class);
+        $definition->setArgument('$ldap', $ldapDefinition);
         $definition->setArgument('$baseDn', $config['ldap_dn']);
         $definition->setArgument('$searchQuery', $config['ldap_groups_search_query']);
         $definition->setArgument('$searchUser', $config['ldap_search_dn']);
