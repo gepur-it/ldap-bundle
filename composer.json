@@ -3,6 +3,7 @@
   "description": "Authorisation bundle fot gepur apps",
   "type": "symfony-bundle",
   "license": "MIT",
+  "version": "1.0.0",
   "authors": [
     {
       "name": "Andrii Yakovlev",
@@ -48,11 +49,6 @@
   "autoload-dev": {
     "psr-4": {
       "GepurIt\\LdapBundle\\Tests\\": "Tests"
-    }
-  },
-  "extra": {
-    "branch-alias": {
-      "dev-master": "master"
     }
   },
   "minimum-stability": "dev",
