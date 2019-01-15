@@ -52,6 +52,10 @@ class Configuration implements ConfigurationInterface
                     ->cannotBeEmpty()
                     ->defaultValue('OU=???????,dc=GEPUR,dc=AD')
                 ->end()
+                ->scalarNode('ldap_base_group_name')
+                    ->cannotBeEmpty()
+                    ->defaultValue('main')
+                ->end()
             ->end()
         ;
         return $treeBuilder;
