@@ -2,6 +2,8 @@
 
 namespace GepurIt\LdapBundle\DependencyInjection;
 
+use GepurIt\LdapBundle\Ldap\LdapConnection;
+use GepurIt\LdapBundle\Security\LdapUserProvider;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
@@ -28,12 +30,24 @@ class LdapExtension extends Extension
         $loader->load('services.yml');
 
         $configuration = $this->getConfiguration($configs, $container);
-        $config = $this->processConfiguration($configuration, $configs);
+        $config        = $this->processConfiguration($configuration, $configs);
 
-        if ($config) {
-            foreach ($config as $name => $value) {
-                $container->setParameter($name, $value);
-            }
-        }
+        $this->initLdapConnection($container, $config);
+        $this->initLdapUserProvider($container, $config);
+    }
+
+    private function initLdapConnection(ContainerBuilder $container, array $config)
+    {
+        $definition = $container->getDefinition(LdapConnection::class);
+        $definition->setArgument('baseDn', $config['ldap_dn']);
+        $definition->setArgument('searchQuery', $config['ldap_groups_search_query']);
+        $definition->setArgument('searchUser', $config['ldap_search_dn']);
+        $definition->setArgument('password', $config['ldap_search_password']);
+    }
+
+    private function initLdapUserProvider(ContainerBuilder $container, array $config)
+    {
+        $definition = $container->getDefinition(LdapUserProvider::class);
+        $definition->setArgument('groupName', $config['ldap_base_group_name']);
     }
 }
