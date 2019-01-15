@@ -39,15 +39,15 @@ class LdapExtension extends Extension
     private function initLdapConnection(ContainerBuilder $container, array $config)
     {
         $definition = $container->getDefinition(LdapConnection::class);
-        $definition->setArgument('baseDn', $config['ldap_dn']);
-        $definition->setArgument('searchQuery', $config['ldap_groups_search_query']);
-        $definition->setArgument('searchUser', $config['ldap_search_dn']);
-        $definition->setArgument('password', $config['ldap_search_password']);
+        $definition->setArgument('$baseDn', $config['ldap_dn']);
+        $definition->setArgument('$searchQuery', $config['ldap_groups_search_query']);
+        $definition->setArgument('$searchUser', $config['ldap_search_dn']);
+        $definition->setArgument('$password', $config['ldap_search_password']);
     }
 
     private function initLdapUserProvider(ContainerBuilder $container, array $config)
     {
         $definition = $container->getDefinition(LdapUserProvider::class);
-        $definition->setArgument('groupName', $config['ldap_base_group_name']);
+        $definition->setArgument('$groupName', $config['ldap_base_group_name']);
     }
 }
