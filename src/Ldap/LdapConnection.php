@@ -77,6 +77,7 @@ class LdapConnection
         $ldap = $this->ldap;
         $ldap->bind($this->searchUser, $this->password);
 
+
         return $ldap->query($this->baseDn, $query);
     }
 

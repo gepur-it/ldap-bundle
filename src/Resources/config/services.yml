@@ -1,4 +1,22 @@
 services:
+    Symfony\Component\Ldap\Ldap:
+        autowire: true
+        arguments: ['@Symfony\Component\Ldap\Adapter\ExtLdap\Adapter']
+
+    Symfony\Component\Ldap\Adapter\ExtLdap\Adapter:
+        autowire: true
+        arguments:
+            -   host: '%ldap_host%'
+                port: '%ldap_port%'
+                encryption: '%ldap_encryption%'
+                options:
+                    protocol_version: 3
+                    referrals: false
+
+    Symfony\Component\Ldap\LdapInterface:
+        alias: Symfony\Component\Ldap\Ldap
+        public: false
+
     GepurIt\LdapBundle\Command\:
         autowire: true
         resource: '../../Command/*'

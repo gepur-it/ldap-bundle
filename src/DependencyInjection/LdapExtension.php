@@ -36,15 +36,15 @@ class LdapExtension extends Extension
         $configuration = $this->getConfiguration($configs, $container);
         $config        = $this->processConfiguration($configuration, $configs);
 
-        $this->initComponent($container, $config);
+//        $this->initComponent($container, $config);
         $this->initLdapConnection($container, $config);
         $this->initLdapUserProvider($container, $config);
     }
 
     private function initComponent(ContainerBuilder $container, array $config)
     {
-        $adapter = new Definition();
-        $adapter->setClass(Adapter::class);
+
+        $adapter = $container->getDefinition(Adapter::class);
         $adapterConfig = [
             'host' => $config['ldap_host'],
             'port' => $config['ldap_port'],
@@ -55,13 +55,13 @@ class LdapExtension extends Extension
             ]
 
         ];
-        $adapter->setArgument('$config', $adapterConfig);
-        $container->setDefinition(Adapter::class, $adapter);
+        $adapter->replaceArgument(0, $adapterConfig);
+//        $container->setDefinition(Adapter::class, $adapter);
 
-        $ldapDefinition = new Definition();
-        $ldapDefinition->setClass(Ldap::class);
-        $ldapDefinition->setArgument('$adapter', $adapter);
-        $container->setDefinition(Ldap::class, $ldapDefinition);
+        $ldapDefinition = $container->getDefinition(Ldap::class);
+//        $ldapDefinition->setClass(Ldap::class);
+        $ldapDefinition->setArgument('$adapter', '@'.Adapter::class);
+//        $container->setDefinition(Ldap::class, $ldapDefinition);
         $container->setAlias(LdapInterface::class, Ldap::class);
     }
 
@@ -69,7 +69,6 @@ class LdapExtension extends Extension
     {
         $definition = $container->getDefinition(LdapConnection::class);
         $ldapDefinition = $container->getDefinition(Ldap::class);
-        $definition->setArgument('$ldap', $ldapDefinition);
         $definition->setArgument('$baseDn', $config['ldap_dn']);
         $definition->setArgument('$searchQuery', $config['ldap_groups_search_query']);
         $definition->setArgument('$searchUser', $config['ldap_search_dn']);

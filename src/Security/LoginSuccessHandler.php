@@ -1,15 +1,15 @@
 <?php
 /**
  * @author: Andrii yakovlev <yawa20@gmail.com>
- * @since: 28.09.17
+ * @since : 28.09.17
  */
 
 namespace GepurIt\LdapBundle\Security;
 
-use GepurIt\ActionLoggerBundle\Logger\ActionLoggerInterface;
 use Doctrine\ODM\MongoDB\DocumentManager;
-use GepurIt\User\Security\User;
+use GepurIt\ActionLoggerBundle\Logger\ActionLoggerInterface;
 use GepurIt\LdapBundle\Document\UserApiKey;
+use GepurIt\User\Security\User;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,23 +25,25 @@ class LoginSuccessHandler extends DefaultAuthenticationSuccessHandler
 {
     /** @var ActionLoggerInterface */
     private $actionLogger;
-    /** @var DocumentManager  */
+
+    /** @var DocumentManager */
     private $documentManager;
 
     /**
      * LoginSuccessHandler constructor.
+     *
      * @param ActionLoggerInterface $actionLogger
-     * @param HttpUtils $httpUtils
-     * @param DocumentManager $documentManager
-     * @param array $options
+     * @param HttpUtils             $httpUtils
+     * @param DocumentManager       $documentManager
+     * @param array                 $options
      */
     public function __construct(
         ActionLoggerInterface $actionLogger,
         HttpUtils $httpUtils,
         DocumentManager $documentManager,
-        array $options = array()
+        array $options = []
     ) {
-        $this->actionLogger = $actionLogger;
+        $this->actionLogger    = $actionLogger;
         $this->documentManager = $documentManager;
         parent::__construct($httpUtils, $options);
     }
@@ -51,7 +53,7 @@ class LoginSuccessHandler extends DefaultAuthenticationSuccessHandler
      * is called by authentication listeners inheriting from
      * AbstractAuthenticationListener.
      *
-     * @param Request $request
+     * @param Request        $request
      * @param TokenInterface $token
      *
      * @return Response never null
@@ -60,28 +62,26 @@ class LoginSuccessHandler extends DefaultAuthenticationSuccessHandler
     public function onAuthenticationSuccess(Request $request, TokenInterface $token)
     {
         $this->actionLogger->log('login', 'User Login');
-        if ($request->getRequestFormat() == 'json') {
-            /** @var User $user */
-            $user = $token->getUser();
+        /** @var User $user */
+        $user = $token->getUser();
 
-            // remove all exists api keys for this user
-            $this->documentManager->createQueryBuilder(UserApiKey::class)
-                ->remove()
-                ->field('username')->equals($user->getUsername())
-                ->getQuery()
-                ->execute();
+        // remove all exists api keys for this user
+        $this->documentManager->createQueryBuilder(UserApiKey::class)
+            ->remove()
+            ->field('username')->equals($user->getUsername())
+            ->getQuery()
+            ->execute();
 
-            // add new api key
-            $userApiKey = new UserApiKey();
-            $userApiKey->setUsername($user->getUsername());
-            $userApiKey->setApiKey(uniqid().uniqid().uniqid());
-            $userApiKey->setUserId($user->getUserId());
-            $userApiKey->setObjectGUID($user->getObjectGUID());
-            $this->documentManager->persist($userApiKey);
-            $this->documentManager->flush();
+        // add new api key
+        $userApiKey = new UserApiKey();
+        $userApiKey->setUsername($user->getUsername());
+        $userApiKey->setApiKey(uniqid().uniqid().uniqid());
+        $userApiKey->setUserId($user->getUserId());
+        $userApiKey->setObjectGUID($user->getObjectGUID());
+        $this->documentManager->persist($userApiKey);
+        $this->documentManager->flush();
 
-            return JsonResponse::fromJsonString(json_encode($userApiKey), 200);
-        }
+        return JsonResponse::fromJsonString(json_encode($userApiKey), 200);
 
         return $this->httpUtils->createRedirectResponse($request, $this->determineTargetUrl($request));
     }
