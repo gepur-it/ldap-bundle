@@ -36,14 +36,10 @@ class LogoutSuccessHandler extends DefaultLogoutSuccessHandler
      */
     public function onLogoutSuccess(Request $request)
     {
-        if ($request->getRequestFormat() == 'json') {
-            $response = new JsonResponse();
-            $response->setStatusCode(204, 'Logged out');
+        $response = new JsonResponse();
+        $response->setStatusCode(204, 'Logged out');
 
-            return $response;
-        }
-
-        return parent::onLogoutSuccess($request);
+        return $response;
     }
 }
 
