@@ -10,7 +10,6 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="ldap_resource")
  * @ORM\Entity(repositoryClass="GepurIt\LdapBundle\Repository\LdapResourceRepository")
- * @JMS\ExclusionPolicy("all")
  * @codeCoverageIgnore
  */
 class LdapResource
