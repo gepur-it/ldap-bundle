@@ -69,7 +69,7 @@ class PrintActiveUsersCommand extends Command
                         return [
                             'name'  => $m->getName(),
                             'login' => $m->getLogin(),
-                            'sid'   => $m->getLdapSid(),
+                            'sid'   => $m->getUserId(),
                         ];
                     },
                     $this->ldapUserProvider->getActiveUsers()
