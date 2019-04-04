@@ -65,13 +65,6 @@ class LoginSuccessHandler extends DefaultAuthenticationSuccessHandler
         /** @var User $user */
         $user = $token->getUser();
 
-        // remove all exists api keys for this user
-        $this->documentManager->createQueryBuilder(UserApiKey::class)
-            ->remove()
-            ->field('username')->equals($user->getUsername())
-            ->getQuery()
-            ->execute();
-
         // add new api key
         $userApiKey = new UserApiKey();
         $userApiKey->setUsername($user->getUsername());
