@@ -83,7 +83,7 @@ class ApiKeyAuthenticator implements AuthenticatorInterface
     {
         $apiKey = $request->headers->get('X-AUTH-TOKEN') ?? $request->query->get('key');
 
-        return null !== $apiKey;
+        return !empty($apiKey);
     }
 
     /**
