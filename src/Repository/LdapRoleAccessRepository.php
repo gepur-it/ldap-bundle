@@ -1,11 +1,16 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: Andrii Yakovlev
+ * Date: 08.12.17
+ */
+declare(strict_types=1);
 
 namespace GepurIt\LdapBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use GepurIt\LdapBundle\Entity\LdapRoleAccess;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Role\Role;
 
 /**
  * LdapRoleAccessRepository
@@ -21,19 +26,12 @@ class LdapRoleAccessRepository extends EntityRepository
      */
     public function findByToken(TokenInterface $token): array
     {
-        $rolesAsString = array_map(
-            function (Role $role) {
-                return $role->getRole();
-            },
-            $token->getRoles()
-        );
-
         $query = $this->createQueryBuilder('ldapRoleAccess')
             ->addSelect('resource')
             ->addSelect('role')
-            ->join('ldapRoleAccess.resource','resource')
-            ->join('ldapRoleAccess.role','role')
-            ->where('role.role IN (:roles)')->setParameter('roles', $rolesAsString)
+            ->join('ldapRoleAccess.resource', 'resource')
+            ->join('ldapRoleAccess.role', 'role')
+            ->where('role.role IN (:roles)')->setParameter('roles', $token->getRoleNames())
             ->getQuery();
 
         /** @var LdapRoleAccess[] $ldapRolesAccess */

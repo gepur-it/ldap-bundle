@@ -1,4 +1,9 @@
 <?php
+/**
+ * @author: Andrii yakovlev <yawa20@gmail.com>
+ * @since : 13.11.17
+ */
+declare(strict_types=1);
 
 namespace GepurIt\LdapBundle\Command;
 
@@ -27,13 +32,13 @@ class PullRolesCommand extends Command
     /**
      * PullRolesCommand constructor.
      *
-     * @param LdapGroupsProvider     $ldapGroupsProvider
+     * @param LdapGroupsProvider $ldapGroupsProvider
      * @param EntityManagerInterface $entityManager
      */
     public function __construct(LdapGroupsProvider $ldapGroupsProvider, EntityManagerInterface $entityManager)
     {
         $this->ldapGroupsProvider = $ldapGroupsProvider;
-        $this->entityManager      = $entityManager;
+        $this->entityManager = $entityManager;
         parent::__construct();
     }
 
@@ -49,7 +54,7 @@ class PullRolesCommand extends Command
     }
 
     /**
-     * @param InputInterface  $input
+     * @param InputInterface $input
      * @param OutputInterface $output
      *
      * @return int|null|void

@@ -1,4 +1,10 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: Andrii Yakovlev
+ * Date: 08.12.17
+ */
+declare(strict_types=1);
 
 namespace GepurIt\LdapBundle\Security;
 
@@ -13,21 +19,26 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
  */
 class AccessProvider
 {
-    /**
-     * @var array
-     */
+    /** @var array */
     private $accessorsMap = [];
 
-    /**
-     * @var EntityManagerInterface
-     */
+    /** @var EntityManagerInterface */
     private $entityManager;
 
+    /**
+     * AccessProvider constructor.
+     * @param EntityManagerInterface $entityManager
+     */
     public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
     }
 
+    /**
+     * @param string $resource
+     * @param TokenInterface $token
+     * @return int
+     */
     public function getResourceAccessMask(string $resource, TokenInterface $token)
     {
         $userName = $token->getUsername();
@@ -46,9 +57,9 @@ class AccessProvider
     protected function loadAccessorMap(TokenInterface $token)
     {
         /** @var LdapRoleAccessRepository $repository */
-        $repository   = $this->entityManager->getRepository(LdapRoleAccess::class);
+        $repository = $this->entityManager->getRepository(LdapRoleAccess::class);
         $roleAccesses = $repository->findByToken($token);
-        $result       = [];
+        $result = [];
         foreach ($roleAccesses as $roleAccess) {
             $resource = $roleAccess->getResource()->getResource();
             if (!isset($result[$resource])) {

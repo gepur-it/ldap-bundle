@@ -3,6 +3,7 @@
  * @author: Andrii yakovlev <yawa20@gmail.com>
  * @since : 13.11.17
  */
+declare(strict_types=1);
 
 namespace GepurIt\LdapBundle\Ldap;
 
@@ -57,7 +58,7 @@ class LdapConnection
     /**
      * @param string $query
      *
-     * @return \Symfony\Component\Ldap\Adapter\QueryInterface
+     * @return QueryInterface
      */
     public function search(string $query): QueryInterface
     {
@@ -70,7 +71,7 @@ class LdapConnection
     /**
      * @param string $query
      *
-     * @return \Symfony\Component\Ldap\Adapter\QueryInterface
+     * @return QueryInterface
      */
     public function query(string $query): QueryInterface
     {
@@ -93,5 +94,15 @@ class LdapConnection
         $ldap = $this->ldap;
 
         return $ldap->escape($subject, $ignore, $flags);
+    }
+
+    /**
+     * @param $dn
+     * @param $password
+     * @return mixed
+     */
+    public function bind($dn, $password)
+    {
+        return $this->ldap->bind($dn, $password);
     }
 }

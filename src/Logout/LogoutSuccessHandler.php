@@ -3,8 +3,9 @@
  * @author: Andrii yakovlev <yawa20@gmail.com>
  * @since : 28.11.17
  */
+declare(strict_types=1);
 
-namespace GepurIt\LdapBundle\Security;
+namespace GepurIt\LdapBundle\Logout;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,10 +37,7 @@ class LogoutSuccessHandler extends DefaultLogoutSuccessHandler
      */
     public function onLogoutSuccess(Request $request)
     {
-        $response = new JsonResponse();
-        $response->setStatusCode(204, 'Logged out');
-
-        return $response;
+        return new JsonResponse(null, 204);
     }
 }
 

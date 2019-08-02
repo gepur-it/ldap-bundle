@@ -5,6 +5,7 @@
  * Date: 16.03.18
  * Time: 11:25
  */
+declare(strict_types=1);
 
 namespace GepurIt\LdapBundle\Entry;
 

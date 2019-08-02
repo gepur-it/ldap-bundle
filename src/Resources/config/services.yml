@@ -1,22 +1,4 @@
 services:
-    Symfony\Component\Ldap\Ldap:
-        autowire: true
-        arguments: ['@Symfony\Component\Ldap\Adapter\ExtLdap\Adapter']
-
-    Symfony\Component\Ldap\Adapter\ExtLdap\Adapter:
-        autowire: true
-        arguments:
-            -   host: '%ldap_host%'
-                port: '%ldap_port%'
-                encryption: '%ldap_encryption%'
-                options:
-                    protocol_version: 3
-                    referrals: false
-
-    Symfony\Component\Ldap\LdapInterface:
-        alias: Symfony\Component\Ldap\Ldap
-        public: false
-
     GepurIt\LdapBundle\Command\:
         autowire: true
         resource: '../../Command/*'
@@ -46,38 +28,26 @@ services:
     GepurIt\LdapBundle\Entry\EntryHelper:
         autowire: true
 
-    GepurIt\LdapBundle\Security\LdapUserProvider:
-        autowire: true
-
     GepurIt\LdapBundle\Security\UserProfileProvider:
         autowire: true
 
-    GepurIt\LdapBundle\Security\FailureHandler:
+    GepurIt\LdapBundle\Logout\LogoutHandler:
         autowire: true
 
-    GepurIt\LdapBundle\Security\LoginSuccessHandler:
+    GepurIt\LdapBundle\Logout\LogoutSuccessHandler:
         autowire: true
 
-    GepurIt\LdapBundle\Security\LogoutLogHandler:
+  # new edition
+    GepurIt\LdapBundle\Ldap\UserProvider:
         autowire: true
 
-    GepurIt\LdapBundle\Security\LogoutCleanApiKeyHandler:
+    GepurIt\LdapBundle\Contracts\ErpUserProviderInterface: '@GepurIt\LdapBundle\Ldap\UserProvider'
+
+    GepurIt\LdapBundle\Guard\LdapAuthenticator:
         autowire: true
 
-    GepurIt\LdapBundle\Security\LogoutSuccessHandler:
+    GepurIt\LdapBundle\ApiKey\ApiKeyStorage:
         autowire: true
 
-    GepurIt\LdapBundle\Security\ApiKeyAuthenticator:
+    GepurIt\LdapBundle\Guard\ApiKeyAuthenticator:
         autowire: true
-
-    GepurIt\LdapBundle\Security\ApiKeyUserProvider:
-        autowire: true
-
-    ldap.user_provider: '@GepurIt\LdapBundle\Security\LdapUserProvider'
-    ldap.login.failure_handler: '@GepurIt\LdapBundle\Security\FailureHandler'
-    ldap.login.success_handler: '@GepurIt\LdapBundle\Security\LoginSuccessHandler'
-    ldap.logout.log_handler: '@GepurIt\LdapBundle\Security\LogoutLogHandler'
-    ldap.logout.api_key_handler: '@GepurIt\LdapBundle\Security\LogoutCleanApiKeyHandler'
-    ldap.logout.success_handler: '@GepurIt\LdapBundle\Security\LogoutSuccessHandler'
-    ldap.api_key.user_provider: '@GepurIt\LdapBundle\Security\ApiKeyUserProvider'
-    ldap.api_key.authenicator: '@GepurIt\LdapBundle\Security\ApiKeyAuthenticator'

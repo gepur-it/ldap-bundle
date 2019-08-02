@@ -1,4 +1,10 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: Andrii Yakovlev
+ * Date: 08.12.17
+ */
+declare(strict_types=1);
 
 namespace GepurIt\LdapBundle\Security;
 
@@ -21,15 +27,16 @@ class LdapGroupsProvider
     /**
      * LdapGroupsProvider constructor.
      *
-     * @param LdapConnection         $ldapConnection
+     * @param LdapConnection $ldapConnection
      * @param EntityManagerInterface $entityManager
      */
     public function __construct(
         LdapConnection $ldapConnection,
         EntityManagerInterface $entityManager
-    ) {
+    )
+    {
         $this->ldapConnection = $ldapConnection;
-        $this->entityManager  = $entityManager;
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -37,15 +44,15 @@ class LdapGroupsProvider
      */
     public function loadRemoteGroups(): array
     {
-        $query   = '(objectCategory=group)';
-        $search  = $this->ldapConnection->search($query);
+        $query = '(objectCategory=group)';
+        $search = $this->ldapConnection->search($query);
         $entries = $search->execute();
-        $groups  = [];
+        $groups = [];
         foreach ($entries as $entry) {
             if (!$entry->hasAttribute('cn')) {
                 continue;
             }
-            $name     = $entry->getAttribute('cn')[0];
+            $name = $entry->getAttribute('cn')[0];
             $groups[] = $name;
         }
 
@@ -67,7 +74,7 @@ class LdapGroupsProvider
     public function forgetGroup(string $group)
     {
         $groupRepository = $this->entityManager->getRepository(LdapRole::class);
-        $group           = $groupRepository->findOneByRole($group);
+        $group = $groupRepository->findOneByRole($group);
         if (null === $group) {
             return;
         }

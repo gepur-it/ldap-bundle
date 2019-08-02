@@ -1,4 +1,10 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: Andrii Yakovlev
+ * Date: 08.12.17
+ */
+declare(strict_types=1);
 
 namespace GepurIt\LdapBundle\Security;
 

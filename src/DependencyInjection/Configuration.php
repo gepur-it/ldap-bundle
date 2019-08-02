@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * @author: Andrii yakovlev <yawa20@gmail.com>
+ * @since : 13.11.17
+ */
+declare(strict_types=1);
 namespace GepurIt\LdapBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;

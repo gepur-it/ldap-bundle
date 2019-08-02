@@ -5,6 +5,7 @@
  * Date: 08.12.17
  * Time: 9:48
  */
+declare(strict_types=1);
 
 namespace GepurIt\LdapBundle\Security;
 
@@ -38,7 +39,7 @@ class UserProfileProvider
      */
     public function getProfile(User $user): UserProfile
     {
-        /** @var \GepurIt\User\Entity\UserProfile $profile */
+        /** @var UserProfile $profile */
         $profile = $this->entityManager
             ->getRepository(UserProfile::class)
             ->find($sid = $user->getUserId());
@@ -62,7 +63,7 @@ class UserProfileProvider
     /**
      * @param string $userId
      *
-     * @return \GepurIt\User\Entity\UserProfile|null
+     * @return UserProfile|null
      */
     public function loadProfileById(string $userId): ?UserProfile
     {

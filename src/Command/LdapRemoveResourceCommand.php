@@ -1,4 +1,9 @@
 <?php
+/**
+ * @author: Andrii yakovlev <yawa20@gmail.com>
+ * @since : 13.11.17
+ */
+declare(strict_types=1);
 
 namespace GepurIt\LdapBundle\Command;
 
@@ -23,10 +28,15 @@ class LdapRemoveResourceCommand extends Command
     /** @var EntityManagerInterface $entityManager */
     private $entityManager;
 
+    /**
+     * LdapRemoveResourceCommand constructor.
+     * @param LdapResourcesProvider $resourceProvider
+     * @param EntityManagerInterface $entityManager
+     */
     public function __construct(LdapResourcesProvider $resourceProvider, EntityManagerInterface $entityManager)
     {
         $this->resourceProvider = $resourceProvider;
-        $this->entityManager    = $entityManager;
+        $this->entityManager = $entityManager;
         parent::__construct();
     }
 
@@ -39,7 +49,7 @@ class LdapRemoveResourceCommand extends Command
     }
 
     /**
-     * @param InputInterface  $input
+     * @param InputInterface $input
      * @param OutputInterface $output
      *
      * @return int|null|void
@@ -55,7 +65,7 @@ class LdapRemoveResourceCommand extends Command
             return;
         }
 
-        $helper   = $this->getHelper('question');
+        $helper = $this->getHelper('question');
         $question = new ConfirmationQuestion('<question>Are you sure? [y|n]:</question>', false);
 
         if (!$helper->ask($input, $output, $question)) {

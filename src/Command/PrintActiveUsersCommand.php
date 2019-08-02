@@ -5,10 +5,11 @@
  * Date: 24.09.18
  * Time: 16:24
  */
+declare(strict_types=1);
 
 namespace GepurIt\LdapBundle\Command;
 
-use GepurIt\LdapBundle\Security\LdapUserProvider;
+use GepurIt\LdapBundle\Contracts\ErpUserProviderInterface;
 use GepurIt\User\Security\User;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
@@ -29,11 +30,15 @@ class PrintActiveUsersCommand extends Command
     private $output;
 
     /**
-     * @var LdapUserProvider
+     * @var ErpUserProviderInterface
      */
     private $ldapUserProvider;
 
-    public function __construct(LdapUserProvider $ldapUserProvider)
+    /**
+     * PrintActiveUsersCommand constructor.
+     * @param ErpUserProviderInterface $ldapUserProvider
+     */
+    public function __construct(ErpUserProviderInterface $ldapUserProvider)
     {
         $this->ldapUserProvider = $ldapUserProvider;
         parent::__construct();
@@ -51,12 +56,12 @@ class PrintActiveUsersCommand extends Command
     }
 
     /**
-     * @param InputInterface  $input
+     * @param InputInterface $input
      * @param OutputInterface $output
      */
     protected function execute(InputInterface $input, OutputInterface $output): void
     {
-        $this->input  = $input;
+        $this->input = $input;
         $this->output = $output;
 
         $table = new Table($output);
@@ -67,9 +72,9 @@ class PrintActiveUsersCommand extends Command
                     function ($m) {
                         /** @var User $m */
                         return [
-                            'name'  => $m->getName(),
+                            'name' => $m->getName(),
                             'login' => $m->getLogin(),
-                            'sid'   => $m->getUserId(),
+                            'sid' => $m->getUserId(),
                         ];
                     },
                     $this->ldapUserProvider->getActiveUsers()

@@ -1,4 +1,10 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: Andrii Yakovlev
+ * Date: 08.12.17
+ */
+declare(strict_types=1);
 
 namespace GepurIt\LdapBundle\Security;
 
@@ -42,7 +48,7 @@ class LdapResourcesProvider
     public function removeResource(string $resourceName)
     {
         $groupRepository = $this->entityManager->getRepository(LdapResource::class);
-        $entity          = $groupRepository->findOneByResource($resourceName);
+        $entity = $groupRepository->findOneByResource($resourceName);
         if (null === $entity) {
             return;
         }

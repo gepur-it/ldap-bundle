@@ -1,4 +1,9 @@
 <?php
+/**
+ * @author: Andrii yakovlev <yawa20@gmail.com>
+ * @since : 13.11.17
+ */
+declare(strict_types=1);
 
 namespace GepurIt\LdapBundle\Command;
 
@@ -26,13 +31,13 @@ class LdapAddResourceCommand extends Command
     /**
      * LdapAddResourceCommand constructor.
      *
-     * @param LdapResourcesProvider  $resourceProvider
+     * @param LdapResourcesProvider $resourceProvider
      * @param EntityManagerInterface $entityManager
      */
     public function __construct(LdapResourcesProvider $resourceProvider, EntityManagerInterface $entityManager)
     {
         $this->resourceProvider = $resourceProvider;
-        $this->entityManager    = $entityManager;
+        $this->entityManager = $entityManager;
         parent::__construct();
     }
 
@@ -45,7 +50,7 @@ class LdapAddResourceCommand extends Command
     }
 
     /**
-     * @param InputInterface  $input
+     * @param InputInterface $input
      * @param OutputInterface $output
      *
      * @return int|null|void

@@ -1,17 +1,19 @@
 <?php
+/**
+ * Gepur ERP.
+ * Author: Andrii Yakovlev <yawa20@gmail.com>
+ * Date: 02.08.19
+ */
+declare(strict_types=1);
 
 namespace GepurIt\LdapBundle\DependencyInjection;
 
 use GepurIt\LdapBundle\Ldap\LdapConnection;
-use GepurIt\LdapBundle\Security\LdapUserProvider;
+use GepurIt\LdapBundle\Ldap\UserProvider;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
-use Symfony\Component\Ldap\Adapter\ExtLdap\Adapter;
-use Symfony\Component\Ldap\Ldap;
-use Symfony\Component\Ldap\LdapInterface;
 
 /**
  * Class LdapExtension
@@ -23,61 +25,43 @@ class LdapExtension extends Extension
     /**
      * Loads a specific configuration.
      *
-     * @param array            $configs   An array of configuration values
+     * @param array $configs An array of configuration values
      * @param ContainerBuilder $container A ContainerBuilder instance
      *
      * @throws \Exception
      */
     public function load(array $configs, ContainerBuilder $container)
     {
-        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yml');
 
         $configuration = $this->getConfiguration($configs, $container);
-        $config        = $this->processConfiguration($configuration, $configs);
+        $config = $this->processConfiguration($configuration, $configs);
 
-//        $this->initComponent($container, $config);
         $this->initLdapConnection($container, $config);
         $this->initLdapUserProvider($container, $config);
     }
 
-    private function initComponent(ContainerBuilder $container, array $config)
-    {
-
-        $adapter = $container->getDefinition(Adapter::class);
-        $adapterConfig = [
-            'host' => $config['ldap_host'],
-            'port' => $config['ldap_port'],
-            'encryption' => $config['ldap_encryption'],
-            'options' => [
-                'protocol_version' => 3,
-                'referrals' => false
-            ]
-
-        ];
-        $adapter->replaceArgument(0, $adapterConfig);
-//        $container->setDefinition(Adapter::class, $adapter);
-
-        $ldapDefinition = $container->getDefinition(Ldap::class);
-//        $ldapDefinition->setClass(Ldap::class);
-        $ldapDefinition->setArgument('$adapter', '@'.Adapter::class);
-//        $container->setDefinition(Ldap::class, $ldapDefinition);
-        $container->setAlias(LdapInterface::class, Ldap::class);
-    }
-
+    /**
+     * @param ContainerBuilder $container
+     * @param array $config
+     */
     private function initLdapConnection(ContainerBuilder $container, array $config)
     {
         $definition = $container->getDefinition(LdapConnection::class);
-        $ldapDefinition = $container->getDefinition(Ldap::class);
         $definition->setArgument('$baseDn', $config['ldap_dn']);
         $definition->setArgument('$searchQuery', $config['ldap_groups_search_query']);
         $definition->setArgument('$searchUser', $config['ldap_search_dn']);
         $definition->setArgument('$password', $config['ldap_search_password']);
     }
 
+    /**
+     * @param ContainerBuilder $container
+     * @param array $config
+     */
     private function initLdapUserProvider(ContainerBuilder $container, array $config)
     {
-        $definition = $container->getDefinition(LdapUserProvider::class);
+        $definition = $container->findDefinition(UserProvider::class);
         $definition->setArgument('$groupName', $config['ldap_base_group_name']);
     }
 }

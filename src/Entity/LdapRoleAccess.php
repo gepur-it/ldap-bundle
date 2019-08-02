@@ -1,4 +1,9 @@
 <?php
+/**
+ * @author: Andrii yakovlev <yawa20@gmail.com>
+ * @since : 13.11.17
+ */
+declare(strict_types=1);
 
 namespace GepurIt\LdapBundle\Entity;
 
@@ -30,7 +35,7 @@ class LdapRoleAccess
     private $resource;
 
     /**
-     * @var string
+     * @var int
      *
      * @ORM\Column(name="permission", type="integer", nullable=false)
      */

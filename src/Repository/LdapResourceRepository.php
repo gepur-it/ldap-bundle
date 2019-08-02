@@ -1,8 +1,15 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: Andrii Yakovlev
+ * Date: 08.12.17
+ */
+declare(strict_types=1);
 
 namespace GepurIt\LdapBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use GepurIt\LdapBundle\Entity\LdapResource;
 
 /**
@@ -32,7 +39,7 @@ class LdapResourceRepository extends EntityRepository
      * @param string $resourceName
      *
      * @return LdapResource|null
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NonUniqueResultException
      */
     public function findOneFullByResource(string $resourceName): ?LdapResource
     {

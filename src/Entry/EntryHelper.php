@@ -3,10 +3,11 @@
  * @author: Andrii yakovlev <yawa20@gmail.com>
  * @since : 13.11.17
  */
+declare(strict_types=1);
 
 namespace GepurIt\LdapBundle\Entry;
 
-use GepurIt\LdapBundle\Security\LdapUserProvider;
+use GepurIt\LdapBundle\Ldap\UserProvider;
 use GepurIt\User\Security\User;
 use Symfony\Component\Ldap\Entry;
 use Symfony\Component\Security\Core\Exception\InvalidArgumentException;
@@ -28,7 +29,7 @@ class EntryHelper
      */
     public function convertToUser(Entry $entry)
     {
-        $username       = $this->getAttributeValue($entry, LdapUserProvider::DEFAULT_UID_KEY);
+        $username       = $this->getAttributeValue($entry, UserProvider::DEFAULT_UID_KEY);
         $sid            = $this->extractSID($entry);
         $extractedRoles = $this->extractRoles($entry);
         $params         = $this->extractParams($entry);
@@ -143,8 +144,8 @@ class EntryHelper
         $subs                = isset($sid['count']) ? $sid['count'] : 0;
 
         // The sub-authorities depend on the count, so only get as many as the count, regardless of data beyond it
-        for ($i = 0; $i < $subs; $i++) {
-            $subAuthorities[] = unpack('V1sub', hex2bin(substr(bin2hex($encodedSID), 16 + ($i * 8), 8)))['sub'];
+        for ($iterator = 0; $iterator < $subs; $iterator++) {
+            $subAuthorities[] = unpack('V1sub', hex2bin(substr(bin2hex($encodedSID), 16 + ($iterator * 8), 8)))['sub'];
         }
         $subAuthorities = implode(preg_filter('/^/', '-', $subAuthorities));
 

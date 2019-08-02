@@ -3,6 +3,7 @@
  * @author: Andrii yakovlev <yawa20@gmail.com>
  * @since : 29.11.17
  */
+declare(strict_types=1);
 
 namespace GepurIt\LdapBundle\Document;
 
@@ -16,6 +17,7 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
  */
 class UserApiKey implements \JsonSerializable
 {
+    const EXPIRATION_TIME = 3600 * 24 * 7; //1 week
     /**
      * @var string
      * @MongoDB\Field(type="string")
@@ -147,9 +149,9 @@ class UserApiKey implements \JsonSerializable
     public function jsonSerialize()
     {
         return [
-            "apiKey"   => $this->getApiKey(),
+            "apiKey" => $this->getApiKey(),
             "username" => $this->getUsername(),
-            "userId"   => $this->getUserId(),
+            "userId" => $this->getUserId(),
         ];
     }
 }

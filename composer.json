@@ -3,7 +3,7 @@
   "description": "Authorisation bundle fot gepur apps",
   "type": "symfony-bundle",
   "license": "MIT",
-  "version": "4.3.0",
+  "version": "4.3.1",
   "authors": [
     {
       "name": "Andrii Yakovlev",
@@ -36,7 +36,8 @@
     "doctrine/mongodb-odm-bundle": "^3.5",
     "symfony/ldap": "^4.3",
     "gepur-it/action-logger-bundle": "^4.3",
-    "symfony/security-bundle": "^4.3"
+    "symfony/security-bundle": "^4.3",
+    "ext-json": "*"
   },
   "require-dev": {
   },

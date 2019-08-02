@@ -5,11 +5,12 @@
  * Date: 20.12.17
  * Time: 11:57
  */
+declare(strict_types=1);
 
 namespace GepurIt\LdapBundle\Command;
 
 use Doctrine\ORM\EntityManagerInterface;
-use GepurIt\LdapBundle\Security\LdapUserProvider;
+use GepurIt\LdapBundle\Contracts\ErpUserProviderInterface;
 use GepurIt\User\Entity\UserProfile;
 use GepurIt\User\Repository\UserProfileRepository;
 use GepurIt\User\Security\User;
@@ -23,20 +24,21 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class FillNameInUserProfileCommand extends Command
 {
-    /**
-     * @var LdapUserProvider
-     */
+    /** @var ErpUserProviderInterface */
     private $ldapUserProvider;
 
-    /**
-     * @var EntityManagerInterface
-     */
+    /** @var EntityManagerInterface */
     private $entityManager;
 
-    public function __construct(LdapUserProvider $ldapUserProvider, EntityManagerInterface $entityManager)
+    /**
+     * FillNameInUserProfileCommand constructor.
+     * @param ErpUserProviderInterface $ldapUserProvider
+     * @param EntityManagerInterface $entityManager
+     */
+    public function __construct(ErpUserProviderInterface $ldapUserProvider, EntityManagerInterface $entityManager)
     {
         $this->ldapUserProvider = $ldapUserProvider;
-        $this->entityManager    = $entityManager;
+        $this->entityManager = $entityManager;
         parent::__construct();
     }
 
@@ -48,7 +50,7 @@ class FillNameInUserProfileCommand extends Command
     }
 
     /**
-     * @param InputInterface  $input
+     * @param InputInterface $input
      * @param OutputInterface $output
      *
      * @return int|null|void

@@ -1,4 +1,9 @@
 <?php
+/**
+ * @author: Andrii yakovlev <yawa20@gmail.com>
+ * @since : 13.11.17
+ */
+declare(strict_types=1);
 
 namespace GepurIt\LdapBundle\Command;
 
@@ -12,6 +17,10 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 
+/**
+ * Class LdapRemoveRoleCommand
+ * @package GepurIt\LdapBundle\Command
+ */
 class LdapRemoveRoleCommand extends Command
 {
     /** @var LdapGroupsProvider */
@@ -23,13 +32,13 @@ class LdapRemoveRoleCommand extends Command
     /**
      * LdapRemoveRoleCommand constructor.
      *
-     * @param LdapGroupsProvider     $resourceProvider
+     * @param LdapGroupsProvider $resourceProvider
      * @param EntityManagerInterface $entityManager
      */
     public function __construct(LdapGroupsProvider $resourceProvider, EntityManagerInterface $entityManager)
     {
         $this->ldapGroupsProvider = $resourceProvider;
-        $this->entityManager      = $entityManager;
+        $this->entityManager = $entityManager;
         parent::__construct();
     }
 
@@ -42,7 +51,7 @@ class LdapRemoveRoleCommand extends Command
     }
 
     /**
-     * @param InputInterface  $input
+     * @param InputInterface $input
      * @param OutputInterface $output
      *
      * @return int|null|void
@@ -58,7 +67,7 @@ class LdapRemoveRoleCommand extends Command
             return;
         }
 
-        $helper   = $this->getHelper('question');
+        $helper = $this->getHelper('question');
         $question = new ConfirmationQuestion('<question>Are you sure? [y|n]:</question>', false);
 
         if (!$helper->ask($input, $output, $question)) {
