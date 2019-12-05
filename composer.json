@@ -3,7 +3,7 @@
   "description": "Authorisation bundle fot gepur apps",
   "type": "symfony-bundle",
   "license": "MIT",
-  "version": "5.0.1",
+  "version": "5.0.2",
   "authors": [
     {
       "name": "Andrii Yakovlev",
@@ -35,8 +35,8 @@
     "alcaeus/mongo-php-adapter": ">=1.1",
     "doctrine/mongodb-odm-bundle": ">=3.5",
     "symfony/ldap": "^4.3|^5.0",
-    "gepur-it/action-logger-bundle": "^4.3|^5.0",
-    "symfony/security-bundle": "^4.3|^5.0"
+    "gepur-it/action-logger-bundle": "^5.0",
+    "symfony/security-bundle": "^5.0"
   },
   "require-dev": {
   },

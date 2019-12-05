@@ -9,6 +9,7 @@ declare(strict_types=1);
 namespace GepurIt\LdapBundle\ApiKey;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
+use Doctrine\ODM\MongoDB\MongoDBException;
 use GepurIt\LdapBundle\Document\UserApiKey;
 
 /**
@@ -44,6 +45,7 @@ class ApiKeyStorage
     /**
      * @param string $apiKey
      * @return bool
+     * @throws MongoDBException
      */
     public function reloadCredentials(string $apiKey): bool
     {
@@ -57,18 +59,19 @@ class ApiKeyStorage
         }
         $userApiKey->updateLastActivity();
         $this->documentManager->persist($userApiKey);
-        $this->documentManager->flush($userApiKey);
+        $this->documentManager->flush();
 
         return true;
     }
 
     /**
      * @param UserApiKey $userApiKey
+     * @throws MongoDBException
      */
     public function prolongApiKey(UserApiKey $userApiKey)
     {
         $userApiKey->updateLastActivity();
         $this->documentManager->persist($userApiKey);
-        $this->documentManager->flush($userApiKey);
+        $this->documentManager->flush();
     }
 }
