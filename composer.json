@@ -33,7 +33,7 @@
     "gepur-it/user": "^1.2",
     "symfony/security": "^4.2",
     "alcaeus/mongo-php-adapter": ">=1.1",
-    "doctrine/mongodb-odm-bundle": "^3.5",
+    "doctrine/mongodb-odm-bundle": ">=3.5",
     "symfony/ldap": "^4.2",
     "gepur-it/action-logger-bundle": "^1.0",
     "symfony/security-bundle": "^4.2"
