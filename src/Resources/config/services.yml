@@ -1,8 +1,13 @@
 services:
     GepurIt\LdapBundle\Command\:
         autowire: true
-        resource: '../../Command/*'
+        resource: '../../Command'
         tags: ['console.command']
+
+    GepurIt\LdapBundle\Repository\:
+        autowire: true
+        resource: '../../Repository'
+        tags: ['doctrine.repository_service']
 
     GepurIt\LdapBundle\Security\AccessProvider:
         autowire: true

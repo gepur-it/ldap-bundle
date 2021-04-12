@@ -23,32 +23,32 @@ class UserApiKey implements \JsonSerializable
      * @MongoDB\Field(type="string")
      * @MongoDB\Id(strategy="NONE")
      */
-    private $apiKey = '';
+    private string $apiKey = '';
 
     /**
      * @var string
      * @MongoDB\Field(type="string")
      */
-    private $username = '';
+    private string $username = '';
 
     /**
      * @var string
      * @MongoDB\Field(type="string")
      */
-    private $userId = '';
+    private string $userId = '';
 
     /**
      * @var string
      * @MongoDB\Field(type="string")
      */
-    private $objectGUID = '';
+    private string $objectGUID = '';
 
     /**
-     * @var \DateTime
+     * @var \DateTime|null
      * @MongoDB\Field(type="date")
      * @MongoDB\Index(expireAfterSeconds="3600")
      */
-    private $lastActivity;
+    private ?\DateTime $lastActivity = null;
 
     /**
      * @return string
@@ -99,9 +99,9 @@ class UserApiKey implements \JsonSerializable
     }
 
     /**
-     * @return \DateTime
+     * @return \DateTime|null
      */
-    public function getLastActivity(): \DateTime
+    public function getLastActivity(): ?\DateTime
     {
         return $this->lastActivity;
     }
@@ -142,11 +142,11 @@ class UserApiKey implements \JsonSerializable
     /**
      * Specify data which should be serialized to JSON
      * @link  http://php.net/manual/en/jsonserializable.jsonserialize.php
-     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * @return array data which can be serialized by <b>json_encode</b>,
      * which is a value of any type other than a resource.
      * @since 5.4.0
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return [
             "apiKey" => $this->getApiKey(),

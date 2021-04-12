@@ -30,17 +30,10 @@ class UserProvider implements UserProviderInterface, ErpUserProviderInterface
     const DEFAULT_UID_KEY = 'sAMAccountName';
     const DEFAULT_SEARCH = '(sAMAccountName={username})';
 
-    /** @var LdapConnection */
-    private $ldapConnection;
-
-    /** @var EntryHelper */
-    private $entryHelper;
-
-    /** @var UserProfileProvider */
-    private $userProfileProvider;
-
-    /** @var string */
-    private $groupName;
+    private LdapConnection $ldapConnection;
+    private EntryHelper $entryHelper;
+    private UserProfileProvider $userProfileProvider;
+    private string $groupName;
 
     /**
      * @param LdapConnection $ldapConnection
@@ -73,7 +66,7 @@ class UserProvider implements UserProviderInterface, ErpUserProviderInterface
      *
      * @throws UsernameNotFoundException if the user is not found
      */
-    public function loadUserByUsername($username)
+    public function loadUserByUsername(string $username): UserInterface
     {
         try {
             $username = $this->ldapConnection->escape($username, '', LdapInterface::ESCAPE_FILTER);
@@ -148,7 +141,7 @@ class UserProvider implements UserProviderInterface, ErpUserProviderInterface
      *
      * @return bool
      */
-    public function supportsClass($class)
+    public function supportsClass(string $class): bool
     {
         return $class === User::class;
     }
@@ -229,7 +222,6 @@ class UserProvider implements UserProviderInterface, ErpUserProviderInterface
         );
 
         $result = [];
-        /** @var Entry[] $entries */
         foreach ($entries as $entry) {
             $result[] = $this->entryHelper->convertToUser($entry);
         }

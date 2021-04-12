@@ -18,11 +18,8 @@ use GepurIt\LdapBundle\Ldap\LdapConnection;
  */
 class LdapGroupsProvider
 {
-    /** @var LdapConnection */
-    private $ldapConnection;
-
-    /** @var EntityManagerInterface $entityManager */
-    private $entityManager;
+    private LdapConnection $ldapConnection;
+    private EntityManagerInterface $entityManager;
 
     /**
      * LdapGroupsProvider constructor.
@@ -85,7 +82,7 @@ class LdapGroupsProvider
     /**
      * @return array|LdapRole[]
      */
-    public function getLocalGroups()
+    public function getLocalGroups(): iterable
     {
         $repository = $this->entityManager->getRepository(LdapRole::class);
 

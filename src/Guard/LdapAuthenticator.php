@@ -9,6 +9,7 @@ declare(strict_types=1);
 namespace GepurIt\LdapBundle\Guard;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
+use Doctrine\ODM\MongoDB\MongoDBException;
 use GepurIt\ActionLoggerBundle\Logger\ActionLoggerInterface;
 use GepurIt\LdapBundle\Contracts\ErpUserProviderInterface;
 use GepurIt\LdapBundle\Document\UserApiKey;
@@ -31,15 +32,9 @@ use Symfony\Component\Security\Guard\Token\PostAuthenticationGuardToken;
  */
 class LdapAuthenticator implements AuthenticatorInterface
 {
-
-    /** @var ErpUserProviderInterface */
-    private $userProvider;
-
-    /** @var ActionLoggerInterface */
-    private $actionLogger;
-
-    /** @var DocumentManager */
-    private $documentManager;
+    private ErpUserProviderInterface $userProvider;
+    private ActionLoggerInterface $actionLogger;
+    private DocumentManager $documentManager;
 
     /**
      * LdapAuthenticator constructor.
@@ -76,11 +71,11 @@ class LdapAuthenticator implements AuthenticatorInterface
      *     return new Response('Auth header required', 401);
      *
      * @param Request $request The request that resulted in an AuthenticationException
-     * @param AuthenticationException $authException The exception that started the authentication process
+     * @param AuthenticationException|null $authException The exception that started the authentication process
      *
      * @return Response
      */
-    public function start(Request $request, AuthenticationException $authException = null)
+    public function start(Request $request, ?AuthenticationException $authException = null)
     {
         if ($request->getRequestFormat() == 'json') {
             return new JsonResponse('Authorisation required', 401);
@@ -96,7 +91,7 @@ class LdapAuthenticator implements AuthenticatorInterface
      * @param Request $request
      * @return bool
      */
-    public function supports(Request $request)
+    public function supports(Request $request): bool
     {
         return ((null !== $request->get('_username')) && (null !== $request->get('_password')));
     }
@@ -119,10 +114,10 @@ class LdapAuthenticator implements AuthenticatorInterface
      *      return ['api_key' => $request->headers->get('X-API-TOKEN')];
      *
      * @param Request $request
-     * @return mixed Any non-null value
+     * @return array Any non-null value
      *
      */
-    public function getCredentials(Request $request)
+    public function getCredentials(Request $request): array
     {
         return [
             'username' => $request->get('_username', ''),
@@ -145,11 +140,9 @@ class LdapAuthenticator implements AuthenticatorInterface
      * @throws AuthenticationException
      *
      */
-    public function getUser($credentials, UserProviderInterface $userProvider)
+    public function getUser($credentials, UserProviderInterface $userProvider): ?UserInterface
     {
-        $user = $userProvider->loadUserByUsername($credentials['username']);
-
-        return $user;
+        return $userProvider->loadUserByUsername($credentials['username']);
     }
 
     /**
@@ -168,7 +161,7 @@ class LdapAuthenticator implements AuthenticatorInterface
      *
      * @throws AuthenticationException
      */
-    public function checkCredentials($credentials, UserInterface $user)
+    public function checkCredentials($credentials, UserInterface $user): bool
     {
         list('username' => $username, 'password' => $password) = $credentials;
         if ('' === (string)$password) {
@@ -192,7 +185,7 @@ class LdapAuthenticator implements AuthenticatorInterface
      * @see AbstractGuardAuthenticator
      *
      */
-    public function createAuthenticatedToken(UserInterface $user, $providerKey)
+    public function createAuthenticatedToken(UserInterface $user, string $providerKey)
     {
         return new PostAuthenticationGuardToken(
             $user,
@@ -234,8 +227,9 @@ class LdapAuthenticator implements AuthenticatorInterface
      * @param string $providerKey The provider (i.e. firewall) key
      *
      * @return Response|null
+     * @throws \JsonException|MongoDBException
      */
-    public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
+    public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $providerKey): ?Response
     {
         $this->actionLogger->log('login', 'User Login');
         /** @var User $user */
@@ -267,7 +261,7 @@ class LdapAuthenticator implements AuthenticatorInterface
      *
      * @return bool
      */
-    public function supportsRememberMe()
+    public function supportsRememberMe(): bool
     {
         return false;
     }

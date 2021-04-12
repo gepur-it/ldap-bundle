@@ -17,15 +17,8 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
  */
 class LdapVoter extends Voter
 {
-    /**
-     * @var AccessProvider
-     */
-    private $accessProvider;
-
-    /**
-     * @var PermissionProvider
-     */
-    private $permissionProvider;
+    private AccessProvider $accessProvider;
+    private PermissionProvider $permissionProvider;
 
     /**
      * LdapVoter constructor.
@@ -46,7 +39,7 @@ class LdapVoter extends Voter
      *
      * @return bool True if the attribute and subject are supported, false otherwise
      */
-    protected function supports($attribute, $subject)
+    protected function supports(string $attribute, $subject): bool
     {
         return (is_string($subject));
     }
@@ -61,7 +54,7 @@ class LdapVoter extends Voter
      *
      * @return bool
      */
-    protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
+    protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool
     {
         $accessMask = $this->accessProvider->getResourceAccessMask($subject, $token);
 

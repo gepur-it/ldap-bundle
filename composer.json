@@ -3,7 +3,7 @@
   "description": "Authorisation bundle fot gepur apps",
   "type": "symfony-bundle",
   "license": "MIT",
-  "version": "5.0.2",
+  "version": "5.1.0",
   "authors": [
     {
       "name": "Andrii Yakovlev",
@@ -27,7 +27,7 @@
   ],
   "homepage": "https://github.com/gepur-it/ldap-bundle",
   "require": {
-    "php": "^7.3",
+    "php": ">=7.4",
     "ext-json": "*",
     "doctrine/orm": ">=2.5",
     "doctrine/doctrine-bundle": ">=1.6",

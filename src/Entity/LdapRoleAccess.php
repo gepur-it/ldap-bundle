@@ -24,7 +24,7 @@ class LdapRoleAccess
      * @ORM\ManyToOne(targetEntity="GepurIt\LdapBundle\Entity\LdapRole", inversedBy="roleAccesses")
      * @ORM\JoinColumn(name="role_id", referencedColumnName="id")
      */
-    private $role;
+    private LdapRole $role;
 
     /**
      * @var LdapResource
@@ -32,14 +32,14 @@ class LdapRoleAccess
      * @ORM\ManyToOne(targetEntity="GepurIt\LdapBundle\Entity\LdapResource", inversedBy="roleAccesses")
      * @ORM\JoinColumn(name="resource_id", referencedColumnName="id")
      */
-    private $resource;
+    private LdapResource $resource;
 
     /**
      * @var int
      *
      * @ORM\Column(name="permission", type="integer", nullable=false)
      */
-    private $permissionMask = 0;
+    private int $permissionMask = 0;
 
     /**
      * LdapRoleAccess constructor.

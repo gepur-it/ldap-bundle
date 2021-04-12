@@ -23,16 +23,9 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class PrintActiveUsersCommand extends Command
 {
-    /** @var InputInterface */
-    private $input;
-
-    /** @var OutputInterface */
-    private $output;
-
-    /**
-     * @var ErpUserProviderInterface
-     */
-    private $ldapUserProvider;
+    private InputInterface $input;
+    private OutputInterface $output;
+    private ErpUserProviderInterface $ldapUserProvider;
 
     /**
      * PrintActiveUsersCommand constructor.
@@ -59,7 +52,7 @@ class PrintActiveUsersCommand extends Command
      * @param InputInterface $input
      * @param OutputInterface $output
      */
-    protected function execute(InputInterface $input, OutputInterface $output): void
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->input = $input;
         $this->output = $output;
@@ -82,5 +75,7 @@ class PrintActiveUsersCommand extends Command
             );
 
         $table->render();
+
+        return 0;
     }
 }

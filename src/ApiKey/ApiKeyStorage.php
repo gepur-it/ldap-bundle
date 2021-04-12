@@ -18,8 +18,7 @@ use GepurIt\LdapBundle\Document\UserApiKey;
  */
 class ApiKeyStorage
 {
-    /** @var DocumentManager */
-    private $documentManager;
+    private DocumentManager $documentManager;
 
     /**
      * ApiKeyStorage constructor.

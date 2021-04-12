@@ -23,10 +23,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 class LdapAddRoleCommand extends Command
 {
     /** @var LdapGroupsProvider */
-    private $ldapGroupsProvider;
+    private LdapGroupsProvider $ldapGroupsProvider;
 
     /** @var EntityManagerInterface $entityManager */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
     /**
      * LdapAddRoleCommand constructor.
@@ -52,9 +52,9 @@ class LdapAddRoleCommand extends Command
      * @param InputInterface $input
      * @param OutputInterface $output
      *
-     * @return int|null|void
+     * @return int
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $roleName = $input->getArgument('role_name');
 
@@ -63,10 +63,11 @@ class LdapAddRoleCommand extends Command
         if ($ldapRepository->existsByRole($roleName)) {
             $output->writeln(sprintf('<info>Role %s already exist.</info>', $roleName));
 
-            return;
+            return 0;
         }
 
         $this->ldapGroupsProvider->rememberGroup($roleName);
         $output->writeln('<fg=green>Ldap role created!</>');
+        return 0;
     }
 }

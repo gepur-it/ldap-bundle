@@ -17,20 +17,11 @@ use Symfony\Component\Ldap\LdapInterface;
  */
 class LdapConnection
 {
-    /** @var LdapInterface */
-    private $ldap;
-
-    /** @var string */
-    private $baseDn;
-
-    /** @var string */
-    private $searchQuery;
-
-    /** @var string */
-    private $searchUser;
-
-    /** @var string */
-    private $password;
+    private LdapInterface $ldap;
+    private string $baseDn;
+    private string $searchQuery;
+    private string $searchUser;
+    private string $password;
 
     /**
      * LdapConnection constructor.
@@ -85,11 +76,11 @@ class LdapConnection
     /**
      * @param string $subject
      * @param string $ignore
-     * @param int    $flags
+     * @param int $flags
      *
      * @return string
      */
-    public function escape($subject, $ignore, $flags)
+    public function escape(string $subject, string $ignore, int $flags): string
     {
         $ldap = $this->ldap;
 

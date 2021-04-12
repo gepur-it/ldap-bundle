@@ -20,7 +20,7 @@ class PermissionProvider
     const MASK__APPROVE = 0b00000100;
     const MASK__DELETE = 0b00001000;
 
-    private $maskMap = [
+    private array $maskMap = [
         'READ' => self::MASK__READ,
         'WRITE' => self::MASK__WRITE,
         'APPROVE' => self::MASK__APPROVE,
@@ -33,7 +33,7 @@ class PermissionProvider
      *
      * @return bool
      */
-    public function isGranted(string $permissionName, int $permission)
+    public function isGranted(string $permissionName, int $permission): bool
     {
         return (bool)($this->getPermissionMask($permissionName) & $permission);
     }

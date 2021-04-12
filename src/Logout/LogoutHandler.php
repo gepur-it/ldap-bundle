@@ -24,10 +24,7 @@ use Symfony\Component\Security\Http\Logout\LogoutHandlerInterface;
  */
 class LogoutHandler implements LogoutHandlerInterface
 {
-    /**
-     * @var DocumentManager
-     */
-    private $documentManager;
+    private DocumentManager $documentManager;
 
     /**
      * LogoutCleanApiKeyHandler constructor.

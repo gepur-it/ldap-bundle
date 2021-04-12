@@ -21,13 +21,8 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class PullRolesCommand extends Command
 {
-    /**
-     * @var LdapGroupsProvider
-     */
-    private $ldapGroupsProvider;
-
-    /** @var  EntityManagerInterface */
-    private $entityManager;
+    private LdapGroupsProvider $ldapGroupsProvider;
+    private EntityManagerInterface $entityManager;
 
     /**
      * PullRolesCommand constructor.
@@ -42,9 +37,6 @@ class PullRolesCommand extends Command
         parent::__construct();
     }
 
-    /**
-     *
-     */
     protected function configure()
     {
         $this
@@ -57,9 +49,9 @@ class PullRolesCommand extends Command
      * @param InputInterface $input
      * @param OutputInterface $output
      *
-     * @return int|null|void
+     * @return int
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $groupNames = $this->ldapGroupsProvider->loadRemoteGroups();
         /** @var LdapRoleRepository $repository */
@@ -73,5 +65,7 @@ class PullRolesCommand extends Command
             $this->entityManager->persist($ldapRole);
             $this->entityManager->flush();
         }
+
+        return 0;
     }
 }

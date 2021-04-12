@@ -23,11 +23,8 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
  */
 class LdapRemoveRoleCommand extends Command
 {
-    /** @var LdapGroupsProvider */
-    private $ldapGroupsProvider;
-
-    /** @var EntityManagerInterface $entityManager */
-    private $entityManager;
+    private LdapGroupsProvider $ldapGroupsProvider;
+    private EntityManagerInterface $entityManager;
 
     /**
      * LdapRemoveRoleCommand constructor.
@@ -54,9 +51,9 @@ class LdapRemoveRoleCommand extends Command
      * @param InputInterface $input
      * @param OutputInterface $output
      *
-     * @return int|null|void
+     * @return int
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $roleName = $input->getArgument('role_name');
         /** @var LdapRoleRepository $ldapRoleRepository */
@@ -64,17 +61,19 @@ class LdapRemoveRoleCommand extends Command
         if (!$ldapRoleRepository->existsByRole($roleName)) {
             $output->writeln(sprintf('<info>Group with name %s not exist.</info>', $roleName));
 
-            return;
+            return 0;
         }
 
         $helper = $this->getHelper('question');
         $question = new ConfirmationQuestion('<question>Are you sure? [y|n]:</question>', false);
 
         if (!$helper->ask($input, $output, $question)) {
-            return;
+            return 0;
         }
 
         $this->ldapGroupsProvider->forgetGroup($roleName);
         $output->writeln('<fg=green>Ldap role removed!</>');
+
+        return 0;
     }
 }

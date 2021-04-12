@@ -19,8 +19,7 @@ use GepurIt\User\Security\User;
  */
 class UserProfileProvider
 {
-    /** @var EntityManagerInterface $entityManager */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
     /**
      * UserProfileProvider constructor.
@@ -55,7 +54,7 @@ class UserProfileProvider
         $profile->setManagerSign(UserProfile::REGARDS_DEFAULT.$name);
         $profile->setManagerName($name);
         $this->entityManager->persist($profile);
-        $this->entityManager->flush($profile);
+        $this->entityManager->flush();
 
         return $profile;
     }

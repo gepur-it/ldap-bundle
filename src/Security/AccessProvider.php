@@ -19,11 +19,8 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
  */
 class AccessProvider
 {
-    /** @var array */
-    private $accessorsMap = [];
-
-    /** @var EntityManagerInterface */
-    private $entityManager;
+    private array $accessorsMap = [];
+    private EntityManagerInterface $entityManager;
 
     /**
      * AccessProvider constructor.
@@ -39,7 +36,7 @@ class AccessProvider
      * @param TokenInterface $token
      * @return int
      */
-    public function getResourceAccessMask(string $resource, TokenInterface $token)
+    public function getResourceAccessMask(string $resource, TokenInterface $token): int
     {
         $userName = $token->getUsername();
         if (empty($this->accessorsMap[$userName])) {
@@ -54,7 +51,7 @@ class AccessProvider
      *
      * @return array
      */
-    protected function loadAccessorMap(TokenInterface $token)
+    protected function loadAccessorMap(TokenInterface $token): array
     {
         /** @var LdapRoleAccessRepository $repository */
         $repository = $this->entityManager->getRepository(LdapRoleAccess::class);

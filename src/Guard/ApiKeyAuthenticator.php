@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 namespace GepurIt\LdapBundle\Guard;
 
+use Doctrine\ODM\MongoDB\MongoDBException;
 use GepurIt\LdapBundle\ApiKey\ApiKeyStorage;
 use GepurIt\LdapBundle\Guard\Token\ApiAuthToken;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -28,9 +29,7 @@ use Symfony\Component\Security\Guard\Token\PostAuthenticationGuardToken;
  */
 class ApiKeyAuthenticator implements AuthenticatorInterface
 {
-
-    /** @var ApiKeyStorage */
-    private $apiKeyStorage;
+    private ApiKeyStorage $apiKeyStorage;
 
     /**
      * ApiKeyAuthenticator constructor.
@@ -59,11 +58,11 @@ class ApiKeyAuthenticator implements AuthenticatorInterface
      *     return new Response('Auth header required', 401);
      *
      * @param Request $request The request that resulted in an AuthenticationException
-     * @param AuthenticationException $authException The exception that started the authentication process
+     * @param AuthenticationException|null $authException The exception that started the authentication process
      *
      * @return Response
      */
-    public function start(Request $request, AuthenticationException $authException = null)
+    public function start(Request $request, ?AuthenticationException $authException = null)
     {
         if ($request->getRequestFormat() == 'json') {
             return new JsonResponse('Auth header required', 401);
@@ -79,7 +78,7 @@ class ApiKeyAuthenticator implements AuthenticatorInterface
      * @param Request $request
      * @return bool
      */
-    public function supports(Request $request)
+    public function supports(Request $request): bool
     {
         $apiKey = $request->headers->get('X-AUTH-TOKEN') ?? $request->query->get('key');
 
@@ -104,10 +103,10 @@ class ApiKeyAuthenticator implements AuthenticatorInterface
      *      return ['api_key' => $request->headers->get('X-API-TOKEN')];
      *
      * @param Request $request
-     * @return mixed Any non-null value
+     * @return array Any non-null value
      *
      */
-    public function getCredentials(Request $request)
+    public function getCredentials(Request $request): array
     {
         $apiKey = $request->headers->get('X-AUTH-TOKEN') ?? $request->query->get('key');
 
@@ -129,7 +128,7 @@ class ApiKeyAuthenticator implements AuthenticatorInterface
      * @throws AuthenticationException
      *
      */
-    public function getUser($credentials, UserProviderInterface $userProvider)
+    public function getUser($credentials, UserProviderInterface $userProvider): ?UserInterface
     {
         $userApiKey = $this->apiKeyStorage->findUserApiKey($credentials['api_key']);
         if (null === $userApiKey) {
@@ -137,8 +136,7 @@ class ApiKeyAuthenticator implements AuthenticatorInterface
                 sprintf('Invalid Api Key "%s"', $credentials['api_key'])
             );
         }
-        $user = $userProvider->loadUserByUsername($userApiKey->getUsername());
-        return $user;
+        return $userProvider->loadUserByUsername($userApiKey->getUsername());
     }
 
     /**
@@ -156,8 +154,9 @@ class ApiKeyAuthenticator implements AuthenticatorInterface
      * @return bool
      *
      * @throws AuthenticationException
+     * @throws MongoDBException
      */
-    public function checkCredentials($credentials, UserInterface $user)
+    public function checkCredentials($credentials, UserInterface $user): bool
     {
         return $this->apiKeyStorage->reloadCredentials($credentials['api_key']);
     }
@@ -176,7 +175,7 @@ class ApiKeyAuthenticator implements AuthenticatorInterface
      * @see AbstractGuardAuthenticator
      *
      */
-    public function createAuthenticatedToken(UserInterface $user, $providerKey)
+    public function createAuthenticatedToken(UserInterface $user, string $providerKey)
     {
         return new PostAuthenticationGuardToken(
             $user,
@@ -218,8 +217,9 @@ class ApiKeyAuthenticator implements AuthenticatorInterface
      * @param string $providerKey The provider (i.e. firewall) key
      *
      * @return Response|null
+     * @throws MongoDBException
      */
-    public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
+    public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $providerKey): ?Response
     {
         if ($token instanceof ApiAuthToken) {
             $this->apiKeyStorage->prolongApiKey($token->getApiKey());
@@ -242,7 +242,7 @@ class ApiKeyAuthenticator implements AuthenticatorInterface
      *
      * @return bool
      */
-    public function supportsRememberMe()
+    public function supportsRememberMe(): bool
     {
         return false;
     }

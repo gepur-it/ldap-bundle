@@ -24,11 +24,8 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class FillNameInUserProfileCommand extends Command
 {
-    /** @var ErpUserProviderInterface */
-    private $ldapUserProvider;
-
-    /** @var EntityManagerInterface */
-    private $entityManager;
+    private ErpUserProviderInterface $ldapUserProvider;
+    private EntityManagerInterface $entityManager;
 
     /**
      * FillNameInUserProfileCommand constructor.
@@ -53,9 +50,9 @@ class FillNameInUserProfileCommand extends Command
      * @param InputInterface $input
      * @param OutputInterface $output
      *
-     * @return int|null|void
+     * @return int
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         /** @var UserProfileRepository $profileRepository */
         $profileRepository = $this->entityManager->getRepository(UserProfile::class);
@@ -64,7 +61,7 @@ class FillNameInUserProfileCommand extends Command
         if (empty($userProfiles)) {
             $output->writeln(sprintf('<info>No profiles with empty names.</info>'));
 
-            return;
+            return 0;
         }
 
         foreach ($userProfiles as $userProfile) {
@@ -76,5 +73,6 @@ class FillNameInUserProfileCommand extends Command
         }
         $this->entityManager->flush();
         $output->writeln('<fg=green>Manager_names was renewed in table user_profile!</>');
+        return 0;
     }
 }

@@ -22,11 +22,8 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class LdapAddResourceCommand extends Command
 {
-    /** @var LdapResourcesProvider */
-    private $resourceProvider;
-
-    /** @var EntityManagerInterface $entityManager */
-    private $entityManager;
+    private LdapResourcesProvider $resourceProvider;
+    private EntityManagerInterface $entityManager;
 
     /**
      * LdapAddResourceCommand constructor.
@@ -53,9 +50,9 @@ class LdapAddResourceCommand extends Command
      * @param InputInterface $input
      * @param OutputInterface $output
      *
-     * @return int|null|void
+     * @return int
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $resourceName = $input->getArgument('resource_name');
         /** @var LdapResourceRepository $resourceRepository */
@@ -63,10 +60,12 @@ class LdapAddResourceCommand extends Command
         if ($resourceRepository->existsByResource($resourceName)) {
             $output->writeln(sprintf('<info>Resource %s already exist.</info>', $resourceName));
 
-            return;
+            return 0;
         }
 
         $this->resourceProvider->createResource($resourceName);
         $output->writeln('<fg=green>Ldap resource created!</>');
+
+        return 0;
     }
 }

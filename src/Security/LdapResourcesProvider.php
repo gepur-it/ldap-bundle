@@ -18,8 +18,7 @@ use GepurIt\LdapBundle\Repository\LdapResourceRepository;
  */
 class LdapResourcesProvider
 {
-    /** @var EntityManagerInterface $entityManager */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
     /**
      * LdapGroupsProvider constructor.
@@ -61,7 +60,7 @@ class LdapResourcesProvider
      *
      * @return bool
      */
-    public function hasResource(string $resourceName)
+    public function hasResource(string $resourceName): bool
     {
         /** @var LdapResourceRepository $resourceRepository */
         $resourceRepository = $this->entityManager->getRepository(LdapResource::class);

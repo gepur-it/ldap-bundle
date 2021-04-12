@@ -27,14 +27,14 @@ class LdapRole
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    private int $id = 0;
 
     /**
      * @var string
      *
      * @ORM\Column(name="role", type="string", length=255, unique=true)
      */
-    private $role;
+    private string $role = '';
 
     /**
      * @var ArrayCollection|LdapRoleAccess[]

@@ -22,11 +22,8 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
  */
 class LdapRemoveResourceCommand extends Command
 {
-    /** @var LdapResourcesProvider $resourceProvider */
-    private $resourceProvider;
-
-    /** @var EntityManagerInterface $entityManager */
-    private $entityManager;
+    private LdapResourcesProvider $resourceProvider;
+    private EntityManagerInterface $entityManager;
 
     /**
      * LdapRemoveResourceCommand constructor.
@@ -52,9 +49,9 @@ class LdapRemoveResourceCommand extends Command
      * @param InputInterface $input
      * @param OutputInterface $output
      *
-     * @return int|null|void
+     * @return int
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $resourceName = $input->getArgument('resource_name');
 
@@ -62,17 +59,19 @@ class LdapRemoveResourceCommand extends Command
         if (!$resourceRepository->existsByResource($resourceName)) {
             $output->writeln(sprintf('<info>Resource with name %s not exist.</info>', $resourceName));
 
-            return;
+            return 0;
         }
 
         $helper = $this->getHelper('question');
         $question = new ConfirmationQuestion('<question>Are you sure? [y|n]:</question>', false);
 
         if (!$helper->ask($input, $output, $question)) {
-            return;
+            return 0;
         }
 
         $this->resourceProvider->removeResource($resourceName);
         $output->writeln('<fg=green>Ldap resource removed!</>');
+
+        return 0;
     }
 }

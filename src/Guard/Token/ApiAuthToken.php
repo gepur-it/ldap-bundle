@@ -19,11 +19,8 @@ use Symfony\Component\Security\Guard\Token\GuardTokenInterface;
  */
 class ApiAuthToken extends AbstractToken implements GuardTokenInterface
 {
-    /** @var string */
-    private $providerKey;
-
-    /** @var UserApiKey */
-    private $apiKey;
+    private string $providerKey;
+    private UserApiKey $apiKey;
 
     /**
      * ApiAuthToken constructor.
@@ -52,9 +49,9 @@ class ApiAuthToken extends AbstractToken implements GuardTokenInterface
     /**
      * Returns the user credentials.
      *
-     * @return mixed The user credentials
+     * @return array The user credentials
      */
-    public function getCredentials()
+    public function getCredentials(): array
     {
         return [];
     }

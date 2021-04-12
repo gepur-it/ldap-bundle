@@ -5,7 +5,6 @@
  */
 declare(strict_types=1);
 
-
 namespace GepurIt\LdapBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -27,14 +26,14 @@ class LdapResource
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    private int $id = 0;
 
     /**
      * @var string
      *
      * @ORM\Column(name="resource", type="string", length=255, unique=true)
      */
-    private $resource;
+    private string $resource = '';
 
     /**
      * @var ArrayCollection|LdapRoleAccess[]
@@ -55,7 +54,7 @@ class LdapResource
      *
      * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -65,7 +64,7 @@ class LdapResource
      *
      * @return string
      */
-    public function getResource()
+    public function getResource(): string
     {
         return $this->resource;
     }
@@ -77,7 +76,7 @@ class LdapResource
      *
      * @return LdapResource
      */
-    public function setResource($resource)
+    public function setResource(string $resource): LdapResource
     {
         $this->resource = $resource;
 
